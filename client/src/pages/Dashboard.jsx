@@ -14,7 +14,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState('all');
-  const itemsPerPage = 3;
+  const itemsPerPage = 10;
 
   const { getToken } = useAuth();
 
