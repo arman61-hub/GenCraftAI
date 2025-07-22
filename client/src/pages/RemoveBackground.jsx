@@ -130,7 +130,7 @@ const RemoveBackground = () => {
             />
             <button
               onClick={handleDownload}
-              className='mt-4 flex items-center justify-center gap-2 text-white bg-[#FF4938] px-4 py-2 text-sm rounded-lg hover:bg-[#e64533] transition'
+              className='mt-4 flex items-center justify-center gap-2 bg-gradient-to-r from-[#F6AB41] to-[#FF4938] text-white px-4 py-2 text-sm rounded-lg transition'
             >
               <Download className='w-4 h-4' />
               Download Image

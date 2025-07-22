@@ -134,7 +134,7 @@ const RemoveObject = () => {
             />
             <button
               onClick={handleDownload}
-              className='flex items-center justify-center gap-2 mt-4 px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white text-sm transition'
+              className='flex items-center justify-center gap-2 mt-4 px-4 py-2 rounded-md bg-gradient-to-r from-[#417DF6] to-[#8E37EB] text-white text-sm transition'
             >
               <Download className='w-4 h-4' />
               Download Image

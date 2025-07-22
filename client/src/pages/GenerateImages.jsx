@@ -137,7 +137,7 @@ const GenerateImages = () => {
               <img src={content} alt="Generated" className='w-full rounded-md' />
               <button
                 onClick={handleDownload}
-                className='flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm'
+                className='flex items-center justify-center gap-2 bg-gradient-to-r from-[#00AD25] to-[#04FF50] text-white px-4 py-2 rounded-md text-sm'
               >
                 <Download className='w-4 h-4' /> Download Image
               </button>
