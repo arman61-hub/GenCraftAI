@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '@clerk/clerk-react';
 import toast from 'react-hot-toast';
@@ -11,8 +11,6 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 const Community = () => {
   const [creations, setCreations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
 
   const { user } = useUser();
   const { getToken } = useAuth();
@@ -58,24 +56,19 @@ const Community = () => {
     }
   }, [user]);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = creations.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(creations.length / itemsPerPage);
-
   return (
     <div className='flex-1 h-full flex flex-col gap-4 p-6'>
       <h2 className='text-xl font-semibold'>Creations</h2>
-      <div className='bg-white h-full w-full rounded-xl overflow-y-scroll p-4'>
+      <div className='bg-white h-full w-full rounded-xl overflow-y-scroll p-4 flex flex-wrap'>
         {!loading ? (
-          currentItems.map((creation, index) => (
+          creations.map((creation, index) => (
             <div
               key={index}
               className='relative group inline-block pl-3 pt-3 w-full sm:max-w-1/2 lg:max-w-1/3'
             >
               <img
                 src={creation.content}
-                alt=''
+                alt='Creation'
                 className='w-full h-full object-cover rounded-lg'
               />
 
@@ -96,7 +89,7 @@ const Community = () => {
             </div>
           ))
         ) : (
-          [...Array(itemsPerPage)].map((_, i) => (
+          [...Array(6)].map((_, i) => (
             <div
               key={i}
               className='inline-block pl-3 pt-3 w-full sm:max-w-1/2 lg:max-w-1/3'
@@ -113,49 +106,6 @@ const Community = () => {
           ))
         )}
       </div>
-
-      {/* Pagination */}
-      {!loading && creations.length > itemsPerPage && (
-        <div className='flex justify-center items-center gap-2 mt-4'>
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className={`p-2 border rounded-lg ${
-              currentPage === 1
-                ? 'opacity-50 cursor-not-allowed'
-                : 'hover:bg-gray-100'
-            }`}
-          >
-            <ChevronLeft size={18} />
-          </button>
-
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentPage(i + 1)}
-              className={`w-8 h-8 text-sm rounded-md ${
-                currentPage === i + 1
-                  ? 'bg-blue-600 text-white font-semibold'
-                  : 'hover:bg-gray-100'
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
-
-          <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-            className={`p-2 border rounded-lg ${
-              currentPage === totalPages
-                ? 'opacity-50 cursor-not-allowed'
-                : 'hover:bg-gray-100'
-            }`}
-          >
-            <ChevronRight size={18} />
-          </button>
-        </div>
-      )}
     </div>
   );
 };
