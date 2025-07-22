@@ -1,9 +1,30 @@
 import React, { useState } from 'react';
 import Markdown from 'react-markdown';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Download } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 const CreationItem = ({ item, onDelete }) => {
   const [expanded, setExpanded] = useState(false);
+
+  // Download image function
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(item.content);
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'image.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      toast.error("Failed to download image.");
+      console.error("Download error:", error);
+    }
+  };
 
   return (
     <div
@@ -21,17 +42,32 @@ const CreationItem = ({ item, onDelete }) => {
           </p>
         </div>
 
-        {/* Type + Trash */}
-        <div className="flex items-center gap-3 self-start sm:self-auto">
+        {/* Type + Trash + Download */}
+        <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
           <span className="bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E40AF] px-3 py-1 text-xs rounded-full">
             {item.type}
           </span>
+
+          {item.type === 'image' && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDownload();
+              }}
+              className="bg-blue-100 text-blue-600 hover:bg-blue-200 p-1 rounded-full"
+              title="Download image"
+            >
+              <Download size={16} />
+            </button>
+          )}
+
           <button
             onClick={(e) => {
               e.stopPropagation();
               onDelete(item.id);
             }}
             className="bg-red-100 text-red-600 hover:bg-red-200 p-1 rounded-full"
+            title="Delete"
           >
             <Trash2 size={16} />
           </button>
