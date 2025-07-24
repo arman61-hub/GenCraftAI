@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useUser , useAuth } from '@clerk/clerk-react';
 import { Heart } from 'lucide-react';
 import axios from 'axios';
-import { useAuth } from '@clerk/clerk-react';
 import toast from 'react-hot-toast';
 import Skeleton from '@mui/material/Skeleton';
 
@@ -34,15 +33,25 @@ const Community = () => {
 
   const imageLikeToggle = async (id) => {
     try {
+      setCreations(prev =>
+        prev.map(item =>
+          item.id === id
+            ? {
+                ...item,
+                likes: item.likes.includes(user.id)
+                  ? item.likes.filter(uid => uid !== user.id)
+                  : [...item.likes, user.id],
+              }
+            : item
+        )
+      );
       const { data } = await axios.post(
         '/api/user/toggle-like-creation',
         { id },
         { headers: { Authorization: `Bearer ${await getToken()}` } }
       );
-      if (data.success) {
-        toast.success(data.message);
-        await fetchCreations();
-      } else {
+
+      if (!data.success) {
         toast.error(data.message);
       }
     } catch (error) {
