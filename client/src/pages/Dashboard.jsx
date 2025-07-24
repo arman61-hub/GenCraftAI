@@ -36,7 +36,6 @@ const Dashboard = () => {
 
   const deleteCreation = async (id) => {
     try {
-      setLoading(true);
       const { data } = await axios.delete(`/api/user/delete-creation/${id}`, {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
@@ -49,7 +48,6 @@ const Dashboard = () => {
     } catch (error) {
       toast.error(error.message);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
